@@ -2,7 +2,7 @@
 # Comprehensive pin test for all XIAO RP2040 Plus pins
 # Runs all tests sequentially. Use for quick board verification.
 
-from machine import Pin, ADC, I2C, SPI, UART, PWM
+from machine import Pin, ADC, I2C, SPI, UART, PWM, SoftI2C
 import time
 
 # ============================================================
@@ -112,12 +112,12 @@ def test_i2c0():
 def test_i2c1():
     print("\n--- I2C1 Scan (NEW) ---")
     try:
-        i2c = I2C(1, sda=20, scl=19, freq=400000)
+        # GPIO20(I2C0 hw) + GPIO19(I2C1 hw) span two hw instances, use SoftI2C
+        i2c = SoftI2C(sda=Pin(20), scl=Pin(19), freq=400000)
         devices = i2c.scan()
-        record(True, f"I2C1 scan: found {len(devices)} device(s) {[hex(a) for a in devices]}")
-        i2c.deinit()
+        record(True, "I2C1 scan: found {} device(s) {}".format(len(devices), [hex(a) for a in devices]))
     except Exception as e:
-        record(False, f"I2C1: {e}")
+        record(False, "I2C1: {}".format(e))
 
 # ============================================================
 # Test 6: SPI test
