@@ -53,9 +53,9 @@
 #endif
 
 // ------------- I2C1 (new on Plus) -------------//
-// I2C1 uses i2c0 hardware instance: SDA=GPIO20, SCL=GPIO19
+// I2C1 uses i2c0 hardware instance: SDA=GPIO18, SCL=GPIO19
 #define PICO_DEFAULT_I2C1 0
-#define PICO_DEFAULT_I2C1_SDA_PIN 20
+#define PICO_DEFAULT_I2C1_SDA_PIN 18
 #define PICO_DEFAULT_I2C1_SCL_PIN 19
 
 // ------------- SPI -------------//
