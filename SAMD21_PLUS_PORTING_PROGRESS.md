@@ -56,3 +56,14 @@ This file tracks verified milestones for the `SEEED_XIAO_SAMD21_PLUS` MicroPytho
 - Result: clean rebuild succeeded; UF2 artifact generated directly by the SAMD port; serial validation sample remains syntax-valid and build target is selectable
 - Blockers: hardware flashing and on-device serial test execution remain unverified in this environment
 - Next action: push branch and, on hardware, flash the UF2 and run `examples/hwapi/xiao_samd21_plus_serial_validation.py`
+
+## 2026-05-15 00:00 AGENT Sync
+- Timestamp: 2026-05-15 +08:00
+- Branch: `xiao_samd21_plus_support`
+- Commit: pending AGENT sync commit
+- Milestone: root AGENT guide sync into live git branch
+- Files changed: `AGENT.md`, `SAMD21_PLUS_PORTING_PROGRESS.md`
+- Verification performed: reviewed the live branch history; confirmed `AGENT.md` was missing while prior implementation and milestone log entries already existed; synced the root execution guide without altering existing board, UF2, or sample code
+- Result: repository root now contains the execution guide required for the documented workflow
+- Blockers: none for this documentation sync; hardware flashing and on-device serial validation remain outside this environment
+- Next action: commit and push the AGENT guide to origin
