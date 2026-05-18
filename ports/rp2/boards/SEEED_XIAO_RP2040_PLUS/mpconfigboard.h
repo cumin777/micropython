@@ -12,8 +12,8 @@
 #define MICROPY_HW_I2C0_SDA  (6)
 
 // I2C1 (uses i2c0 hardware instance, new on Plus)
-#define MICROPY_HW_I2C1_SCL  (19)
-#define MICROPY_HW_I2C1_SDA  (18)
+#define MICROPY_HW_I2C1_SCL  (21)
+#define MICROPY_HW_I2C1_SDA  (20)
 
 // SPI0
 #define MICROPY_HW_SPI0_SCK  (2)
