@@ -39,6 +39,14 @@
 #include <zephyr/bluetooth/gatt.h>
 #include "extmod/modbluetooth.h"
 
+#ifndef BT_LE_ADV_OPT_CONNECTABLE
+#define BT_LE_ADV_OPT_CONNECTABLE BT_LE_ADV_OPT_CONN
+#endif
+
+#ifndef BT_LE_ADV_OPT_ONE_TIME
+#define BT_LE_ADV_OPT_ONE_TIME 0
+#endif
+
 #define DEBUG_printf(...) // printk("BLE: " __VA_ARGS__)
 
 #define BLE_HCI_SCAN_ITVL_MIN 0x10
