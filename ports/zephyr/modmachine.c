@@ -34,6 +34,14 @@
 
 #include "modmachine.h"
 
+#if defined(CONFIG_BOARD_XIAO_NRF54LM20B)
+extern const mp_obj_type_t rtc_type;
+#define MICROPY_PY_MACHINE_RTC_ENTRY \
+    { MP_ROM_QSTR(MP_QSTR_RTC), MP_ROM_PTR(&rtc_type) },
+#else
+#define MICROPY_PY_MACHINE_RTC_ENTRY
+#endif
+
 #ifdef CONFIG_REBOOT
 #define MICROPY_PY_MACHINE_RESET_ENTRY { MP_ROM_QSTR(MP_QSTR_reset), MP_ROM_PTR(&machine_reset_obj) },
 #else
@@ -42,6 +50,7 @@
 
 #define MICROPY_PY_MACHINE_EXTRA_GLOBALS \
     MICROPY_PY_MACHINE_RESET_ENTRY \
+    MICROPY_PY_MACHINE_RTC_ENTRY \
     { MP_ROM_QSTR(MP_QSTR_reset_cause), MP_ROM_PTR(&machine_reset_cause_obj) }, \
     { MP_ROM_QSTR(MP_QSTR_Pin), MP_ROM_PTR(&machine_pin_type) }, \
     { MP_ROM_QSTR(MP_QSTR_Timer), MP_ROM_PTR(&machine_timer_type) }, \

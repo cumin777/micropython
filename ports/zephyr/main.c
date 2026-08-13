@@ -57,6 +57,9 @@
 
 #if MICROPY_VFS
 #include "extmod/vfs.h"
+#if MICROPY_VFS_LFS2
+#include "extmod/vfs_lfs.h"
+#endif
 #endif
 
 #include "modmachine.h"
@@ -122,8 +125,32 @@ static void vfs_init(void) {
     if ((bdev != NULL)) {
         mount_point = mp_obj_new_str_from_cstr(mount_point_str);
         ret = mp_vfs_mount_and_chdir_protected(bdev, mount_point);
-        mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(path_lib_qstr));
-        // TODO: if this failed, make a new file system and try to mount again
+
+        #if MICROPY_VFS_LFS2
+        // A blank device, or a device whose LittleFS geometry changed after a
+        // firmware update, cannot be mounted by auto-detection.  This is the
+        // expected first-boot state for the external XIAO SPI NOR, so create
+        // a fresh filesystem and retry.  Existing data is retained whenever
+        // the initial mount succeeds.
+        if (ret != 0) {
+            nlr_buf_t nlr;
+            if (nlr_push(&nlr) == 0) {
+                mp_obj_t mkfs = mp_load_attr(MP_OBJ_FROM_PTR(&mp_type_vfs_lfs2), MP_QSTR_mkfs);
+                mp_call_function_1(mkfs, bdev);
+                nlr_pop();
+                mp_printf(MP_PYTHON_PRINTER, "Formatting %s (LittleFS mount error %d)\\n", mount_point_str, ret);
+                ret = mp_vfs_mount_and_chdir_protected(bdev, mount_point);
+            } else {
+                mp_printf(MP_PYTHON_PRINTER, "Unable to format %s (LittleFS mount error %d)\\n", mount_point_str, ret);
+            }
+        }
+        #endif
+
+        if (ret == 0) {
+            mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(path_lib_qstr));
+        } else {
+            mp_printf(MP_PYTHON_PRINTER, "Unable to mount %s: %d\\n", mount_point_str, ret);
+        }
     }
 }
 #endif // MICROPY_VFS

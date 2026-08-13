@@ -144,6 +144,7 @@ static const mp_rom_map_elem_t mp_module_zsensor_globals_table[] = {
     C(VOC),
     C(GAS_RES),
     C(VOLTAGE),
+    C(GAUGE_VOLTAGE),
 #undef C
 };
 
